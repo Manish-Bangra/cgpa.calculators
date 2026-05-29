@@ -1,0 +1,459 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <div id="box"> this is my first practice question </div>
+    
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --background: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --error-color: #dc2626;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .subject-row {
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #f9fafb;
+        }
+
+        .subject-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        #result-card {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #eef2ff;
+            border: 1px solid #e0e7ff;
+            display: none;
+        }
+
+        #error-card {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fef2f2;
+            border: 1px solid #fee2e2;
+            color: var(--error-color);
+            display: none;
+            font-weight: 500;
+        }
+
+        .result-line {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .result-highlight {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class "container">
+        <h2 class="heading"> Academic Performance Calculator</h2>
+
+        <div id= "step-1" style="display: block;">
+            <div class="form-group">
+                <label for="semester">Semester</label>
+                <input type="number" id="semester" placeholder="e.g., 4" min="1">
+            </div>
+            <div class="form-group">
+                <label for="branch">Branch</label>
+                <input type="text" id="branch" placeholder="e.g.,Computer Science">
+            </div>
+            <div class="form-group">
+                <label for="numsubject">Total Number Of Subject</label>
+                <input type="number" id="numsubject" placeholder="e.g.,5" min="1">
+            </div>
+            <button onclick="generateSubjectInputs()">Next: Enter Subject Details</button>
+        </div>
+        <div id="step-2" style="display: none;">
+            <div id="subject-container">
+                <div class="subject-row">
+                    <div class="subject-title">Subject 1</div>
+                    <div class="grid-3">
+                        <div>
+                            <input type="text" class="sub-name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-credit" placeholder="e.g., 3" min="1" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-marks" placeholder="e.g., 87" min="0" max="100" required>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="subject-row">
+                    <div class="subject-title">Subject 2</div>
+                    <div class="grid-3">
+                        <div>
+                            <input type="text" class="sub-name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="subject-row">
+                    <div class="subject-title">Subject 3</div>
+                    <div class="grid-3">
+                        <div>
+                            <input type="text" class="sub-name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
+                        </div>
+
+                    </div>
+                </div>
+                  <div class="subject-row">
+                    <div class="subject-title">Subject 4</div>
+                    <div class="grid-3">
+                        <div>
+                            <input type="text" class="sub-name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
+                        </div>
+
+                    </div>
+                </div>
+                  <div class="subject-row">
+                    <div class="subject-title">Subject 5</div>
+                    <div class="grid-3">
+                        <div>
+                            <input type="text" class="sub-name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
+                        </div>
+
+                    </div>
+                </div>
+                  <div class="subject-row">
+                    <div class="subject-title">Subject 6</div>
+                    <div class="grid-3">
+                        <div>
+                            <input type="text" class="sub-name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                        </div>
+                        <div>
+                            <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <button onclick="calculateCGPA()">Calculate CGPA</button>
+            <button onclick="resetForm()" style="background-color: #6b7280;margin-top: 5px;">Back</button>
+        </div>
+        <div id="error-card"></div>
+        <div id="result-card"></div>
+        
+    </div>
+    <script>
+        
+function calculateGrade(marks){
+	
+	if(marks<=100 &&marks>90){
+		return 10;
+	}
+	else if(marks<=90 && marks>80){
+		return 9;
+	}
+	else if(marks<=80 && marks>70){
+		return 8;
+	}
+	else if(marks<=70 && marks>60){
+		return 7;
+	}
+	else if(marks<=60 && marks>50){
+		return 6;
+	}
+	else if(marks<=50 && marks>40){
+		return 5;
+	}
+	else{
+		return -1;
+	}
+}
+
+    function generateSubjectInputs() {
+
+        const numSubjects = parseInt(document.getElementById('numsubject').value);
+
+        const semester = document.getElementById('semester').value;
+
+       const branch = document.getElementById('branch').value;
+
+       if(!semester ||!branch || !numSubjects || numSubjects <=0){
+        alert("Please fill in all the details correctly.");
+        return;
+       }
+       const container = document.getElementById('subject-container');
+       container.innerHTML = '';//clear previous inputs if any
+
+       for(let i=0;i<numSubjects;i++){
+        const subjectDiv = document.createElement('div');
+        subjectDiv.className = 'subject-row';
+        subjectDiv.innerHTML = `
+        <div class="subject-title">Subject ${i+1}</div>
+        <div class="grid-3">
+            <div>
+                <input type="text" class="sub-name" placeholder="Name" required>
+            </div>
+            <div>
+                <input type="number" class="sub-credits" placeholder="Credits" min="1" required>
+            </div>
+            <div>
+                <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
+            </div>
+        </div>
+        `;
+        container.appendChild(subjectDiv);
+       }
+       document.getElementById('step-1').style.display = 'none';
+       document.getElementById('step-2').style.display = 'block';
+       document.getElementById('error-card').style.display = 'none';
+       document.getElementById('result-card').style.display = 'none';
+    }
+
+    function calculateCGPA(){
+
+        const semester = document.getElementById('semester').value;
+        const branch = document.getElementById('branch').value;
+
+
+        const names = document.querySelectorAll('.sub-name');
+        const credits = document.querySelectorAll('.sub-credits');
+        const marks = document.querySelectorAll('.sub-marks');
+
+        let totalGradePoints = 0;
+        let totalCredits = 0;
+
+const errorCard = document.getElementById('error-card');
+const resultCard = document.getElementById('result-card');
+
+for(let i=0;i<names.length; i++){
+
+    const subName = names[i].value || `Subject ${i + 1}`;
+    const subCredit = parseInt(credits[i].value);
+    const subMarks = parseInt(marks[i].value);
+
+
+    if(isNaN(subCredit) || isNaN(subMarks)) {
+        errorCard.innerText = "Please enter valid credits and Marks for all subjects.";
+        errorCard.style.display = 'block';
+        return;
+    }
+    const points = calculateGrade(subMarks);
+
+    //Replicating your C++ fail condition
+    if(points === -1) {
+        errorCard.innerHTML = `student failed in <strong>${subName}</strong>.So CGPA cannot be calculated. SORRY!`;
+        errorCard.style.display = 'block';
+        return;
+    }
+    totalGradePoints += (subCredit * points);
+    totalCredits += subCredit;
+
+}
+if(totalCredits === 0) {
+    crrorcard.innerText = "total credits cannot be zero.";
+    errorCard.style.display = 'block';
+    return;
+}
+
+//final Result Display
+
+const cgpa = (totalGradePoints / totalCredits).toFixed(2);
+
+resultCard.innerHTML = `
+<div class="result-line"><strong>semester:</strong> ${semester}</div>
+<div class="result-line"><strong>branch:</strong> ${branch}</div>
+<div class="result-highlight">Your CGPA is: ${cgpa}</div>
+`;
+resultCard.style.display = 'block';
+    }
+    function resetForm() {
+
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('step-1').style.display = 'block';
+        document.getElementById('error-card').style.display = 'none';
+        document.getElementById('result-card').style.display = 'none';
+        
+    }
+    </script>
+    <!--Code injected by live-server -->
+    <script>
+        //<![CDATA[  <-- for support
+        if('WebSocket' in window) {
+            (function(){
+                function refreshCSS(){
+                    var sheets = [].slice.call(document.getElementByTagname("link"));
+                    var head = document.getElementByTagName("head")[0];
+
+                    for(var i=0;i<sheets.length;i++) {
+                        var elem = sheets[i];
+                        var parent = elem.parentElement || head;
+                        parent.removeChild(elem);
+                        var rel = elem.rel;
+
+                        if(elem.href && typeof rel != "string" || rel.length ==0 || rel.toLowerCase()== "stylesheet"){
+                            var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/,'');
+                            elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') +'_cacheOverride=' + (new Date().valueOf());
+
+                        }
+                        parent.appendChild(elem);
+                    }
+                }
+                
+                var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+                var address = protocol + window.location.host + window.location.pathmane + '/ws';
+                var socket = new WebSocket(address);
+                socket.onmessage = function(msg) {
+                    if(msg.data == 'reload') window.location.reload();
+                    else if(msg.data == 'refreshcss') refreshCSS();
+                };
+                if (sessionStorage && !sessionStorage.getItem('IsThisfirstTime_Log_from_LiveServer')) {
+                    console.log('Live reload enabled.');
+                    sessionStorage.setItem('IsthisFirstTime_Log_From_LiveServer',true);
+
+                }
+
+            })();
+        }
+        else{
+            console.error('Upgrade your browser. This Browser is not supported WebSocket for Live-Reloading.');
+        }
+    </script>
+    <span id="PING_IFREME_FORM_DEFINATION" style="display: none;"></span>
+    
+</body>
+</html>
