@@ -1,18 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="practice.css">
-</head>
-<body>
-    <div id="box"> this is my first practice question </div>
-    
-</body>
-</html> -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +8,7 @@
          :root {
             --primary-color: #4f46e5;
             --primary-hover: #4338ca;
-            --background: #f3f4f6;
+            --background: #525459;
             --card-bg: #ffffff;
             --text-main: #1f2937;
             --text-muted: #4b5563;
@@ -33,6 +18,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(rgba(243, 244, 246, 0.75), rgba(243, 244, 246, 0.75)), url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1920');
             background-color: var(--background);
             color: var(--text-main);
             margin: 0;
@@ -51,6 +37,11 @@
             width: 100%;
             max-width: 600px;
         }
+        #subject-container {
+            max-height: 60vh; /* Ek fixed height de di */
+            overflow-y: auto;  /* Content badhne par container ke andar scrollbar aa jayega */
+            padding-right: 5px; /* Scrollbar ke liye thodi jagah */
+}
 
         h2 {
             margin-top: 0;
@@ -157,8 +148,9 @@
     </style>
 </head>
 <body>
-    <div class "container">
-        <h2 class="heading"> Academic Performance Calculator</h2>
+    <div class="container">
+        <h2 class="heading"> Academic Performance Calculator <br>
+        CGPA CALCULATOR</h2>
 
         <div id= "step-1" style="display: block;">
             <div class="form-group">
@@ -184,7 +176,7 @@
                             <input type="text" class="sub-name" placeholder="Name" required>
                         </div>
                         <div>
-                            <input type="number" class="sub-credit" placeholder="e.g., 3" min="1" required>
+                            <input type="number" class="sub-credits" placeholder="e.g., 3" min="1" required>
                         </div>
                         <div>
                             <input type="number" class="sub-marks" placeholder="e.g., 87" min="0" max="100" required>
@@ -199,7 +191,7 @@
                             <input type="text" class="sub-name" placeholder="Name" required>
                         </div>
                         <div>
-                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                            <input type="number" class="sub-credits" placeholder="Credits" min="1" required>
                         </div>
                         <div>
                             <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
@@ -214,7 +206,7 @@
                             <input type="text" class="sub-name" placeholder="Name" required>
                         </div>
                         <div>
-                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                            <input type="number" class="sub-credits" placeholder="Credits" min="1" required>
                         </div>
                         <div>
                             <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
@@ -229,7 +221,7 @@
                             <input type="text" class="sub-name" placeholder="Name" required>
                         </div>
                         <div>
-                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                            <input type="number" class="sub-credits" placeholder="Credits" min="1" required>
                         </div>
                         <div>
                             <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
@@ -244,7 +236,7 @@
                             <input type="text" class="sub-name" placeholder="Name" required>
                         </div>
                         <div>
-                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                            <input type="number" class="sub-credits" placeholder="Credits" min="1" required>
                         </div>
                         <div>
                             <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
@@ -259,7 +251,7 @@
                             <input type="text" class="sub-name" placeholder="Name" required>
                         </div>
                         <div>
-                            <input type="number" class="sub-credit" placeholder="Credits" min="1" required>
+                            <input type="number" class="sub-credits" placeholder="Credits" min="1" required>
                         </div>
                         <div>
                             <input type="number" class="sub-marks" placeholder="Marks" min="0" max="100" required>
@@ -300,7 +292,7 @@ function calculateGrade(marks){
 		return 5;
 	}
 	else{
-		return -1;
+		return 0;
 	}
 }
 
@@ -345,6 +337,12 @@ function calculateGrade(marks){
     }
 
     function calculateCGPA(){
+        const errorCard = document.getElementById('error-card');
+        const resultCard = document.getElementById('result-card');
+
+        errorCard.innerText = "";
+        errorCard.style.display = 'none';
+        resultCard.style.display = 'none';
 
         const semester = document.getElementById('semester').value;
         const branch = document.getElementById('branch').value;
@@ -357,8 +355,8 @@ function calculateGrade(marks){
         let totalGradePoints = 0;
         let totalCredits = 0;
 
-const errorCard = document.getElementById('error-card');
-const resultCard = document.getElementById('result-card');
+        //fail subject ko track krne ke liye
+        let failedSubjects = [];
 
 for(let i=0;i<names.length; i++){
 
@@ -375,17 +373,16 @@ for(let i=0;i<names.length; i++){
     const points = calculateGrade(subMarks);
 
     //Replicating your C++ fail condition
-    if(points === -1) {
-        errorCard.innerHTML = `student failed in <strong>${subName}</strong>.So CGPA cannot be calculated. SORRY!`;
-        errorCard.style.display = 'block';
-        return;
+    if(points === 0) {
+       failedSubjects.push(subName);
+        
     }
     totalGradePoints += (subCredit * points);
     totalCredits += subCredit;
 
 }
 if(totalCredits === 0) {
-    crrorcard.innerText = "total credits cannot be zero.";
+    errorcard.innerText = "total credits cannot be zero.";
     errorCard.style.display = 'block';
     return;
 }
@@ -394,13 +391,33 @@ if(totalCredits === 0) {
 
 const cgpa = (totalGradePoints / totalCredits).toFixed(2);
 
-resultCard.innerHTML = `
+let resultHTML = `
 <div class="result-line"><strong>semester:</strong> ${semester}</div>
 <div class="result-line"><strong>branch:</strong> ${branch}</div>
 <div class="result-highlight">Your CGPA is: ${cgpa}</div>
 `;
-resultCard.style.display = 'block';
+if(failedSubjects.length > 0) {
+        resultHTML += `
+            <hr style="border: 0; border-top: 1px solid #cbd5e1; margin: 15px 0;">
+            <div class="result-line" style="color: var(--error-color); font-weight: 600;">
+                ⚠️ Total Backlogs / Fail Subjects: ${failedSubjects.length}
+            </div>
+            <div class="result-line" style="color: #b91c1c; font-size: 14px; margin-top: 5px;">
+                <strong>Subjects:</strong> ${failedSubjects.join(', ')}
+            </div>
+        `;
+    } else {
+        resultHTML += `
+            <div class="result-line" style="color: #15803d; font-weight: 600; margin-top: 10px;">
+                🎉 Congratulations! Passed in all subjects.
+            </div>
+        `;
     }
+
+    resultCard.innerHTML = resultHTML;
+    resultCard.style.display = 'block';
+}
+    
     function resetForm() {
 
         document.getElementById('step-2').style.display = 'none';
@@ -412,7 +429,6 @@ resultCard.style.display = 'block';
     </script>
     <!--Code injected by live-server -->
     <script>
-        //<![CDATA[  <-- for support
         if('WebSocket' in window) {
             (function(){
                 function refreshCSS(){
